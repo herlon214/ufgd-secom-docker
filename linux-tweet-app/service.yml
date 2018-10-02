@@ -1,0 +1,19 @@
+version: "3"
+
+services:
+  tweet:
+    image: ufgd/tweetapp
+    networks:
+      - traefik_proxy
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.frontend.passHostHeader=true"
+        - "traefik.frontend.rule=Host:tweetapp.ufgd"
+        - "traefik.port=80"
+    
+networks:
+  traefik_proxy:
+    external:
+      name: traefik_proxy
