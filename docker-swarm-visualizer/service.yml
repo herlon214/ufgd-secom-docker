@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  web:
+    image: dockersamples/visualizer
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock
+    networks:
+      - traefik_proxy
+    deploy:
+      replicas: 1
+      labels:
+        - "traefik.enable=true"
+        - "traefik.frontend.passHostHeader=true"
+        - "traefik.frontend.rule=Host:visualizer.ufgd"
+        - "traefik.port=8080"
+      placement:
+        constraints: [node.role == manager]
+    
+networks:
+  traefik_proxy:
+    external:
+      name: traefik_proxy
